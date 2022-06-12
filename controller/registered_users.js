@@ -32,6 +32,14 @@ exports.register = async function (req, res, next) {
   try {
     const body = req.body;
 
+    if(!body.password){
+      return next(new ErrorResponse("Please enter password", 401));
+    }
+
+    if(!body.phoneNumber){
+      return next(new ErrorResponse("Please enter phone number", 401));
+    }
+
     const isNumberPresentGlobal = await globalUsers.findAll({
       where: {
         phoneNumber: body.phoneNumber,
@@ -61,18 +69,17 @@ exports.register = async function (req, res, next) {
 
     sendTokenResponse(user, 200, res);
   } catch (error) {
-    const message = [];
-    error.errors.forEach((e) => {
-      message.push(e.message);
-    });
-    console.log(message);
-    return next(new ErrorResponse(message, 404));
+    return next(new ErrorResponse(error, 404));
   }
 };
 
 exports.spam = async function (req, res, next) {
   try {
     const { phoneNumber } = req.body;
+
+    if(!phoneNumber){
+      return next(new ErrorResponse("Please enter phone number", 401));
+    }
 
     const isNumberPresent = await globalUsers.findAll({
       where: {
@@ -106,10 +113,14 @@ exports.spam = async function (req, res, next) {
   }
 };
 
-exports.searchByName = async function (req, res) {
+exports.searchByName = async function (req, res, next) {
   try {
     const Op = Sequelize.Op;
     const searchTerm = req.body.search;
+
+    if(!searchTerm){
+      return next(new ErrorResponse("Please enter name", 401));
+    }
     const resp = await globalUsers.findAll({
       where: {
         [Op.or]: [{ name: { [Op.like]: "%" + searchTerm + "%" } }],
@@ -130,10 +141,14 @@ exports.searchByName = async function (req, res) {
   }
 };
 
-exports.searchByPhone = async function (req, res) {
+exports.searchByPhone = async function (req, res, next) {
   try {
     const Op = Sequelize.Op;
     const searchTerm = req.body.search;
+
+    if(!searchTerm){
+      return next(new ErrorResponse("Please enter phone number", 401));
+    }
 
     const isPhoneNumberPresent = await registeredUsers.findAll({
       where: {

@@ -8,16 +8,22 @@ dotenv.config({ path: "./config/config.env" });
 
 const db = require("./config/db");
 const globalUsers = db.globalUsers;
+const contacts = db.contacts;
 
 // Read JSON Files
 const registered_users = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/global_users.json`, "utf-8")
 );
 
+const contact_file = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/contacts.json`, "utf-8")
+);
+
 // Import into DB
 const importData = async function () {
   try {
     await globalUsers.bulkCreate(registered_users);
+    await contacts.bulkCreate(contact_file);
 
     console.log("Data Imported...");
     process.exit();
@@ -30,6 +36,10 @@ const importData = async function () {
 const deleteData = async function () {
   try {
     await globalUsers.destroy({
+      where: {},
+    });
+
+    await contacts.destroy({
       where: {},
     });
 

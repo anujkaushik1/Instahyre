@@ -1,0 +1,64 @@
+[
+    {
+      "id": 1,
+      "name": "Anuj Kaushik",
+      "phoneNumber": "9876543210",
+      "email" : "a@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "Nishant Jain",
+      "phoneNumber": "1234567890",
+      "email" : "a1@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "Kamal Kant",
+      "phoneNumber": "1234567891",
+      "email" : "a3@gmail.com"
+    },
+    {
+      "id": 4,
+      "name": "Neeraj Sharma",
+      "phoneNumber": "1234567892",
+      "email" : "a4@gmail.com"
+    },
+    {
+      "id": 5,
+      "name": "Vishal Rout",
+      "phoneNumber": "1234567895",
+      "email" : "a5@gmail.com"
+    },
+  
+    {
+      "id": 6,
+      "name": "Anuj",
+      "phoneNumber": "9776541210",
+      "email" : "a6@gmail.com"
+    },
+    {
+      "id": 7,
+      "name": "Nishant",
+      "phoneNumber": "1231567890",
+      "email" : "a7@gmail.com"
+    },
+    {
+      "id": 8,
+      "name": "Kamal",
+      "phoneNumber": "1234867891",
+      "email" : "a8@gmail.com"
+    },
+    {
+      "id": 9,
+      "name": "Neeraj",
+      "phoneNumber": "1234567893",
+      "email" : "a9@gmail.com"
+    },
+    {
+      "id": 10,
+      "name": "Vishal",
+      "phoneNumber": "1234567894",
+      "email" : "a10@gmail.com"
+    }
+  ]
+  

@@ -14,11 +14,6 @@ exports.register = async function (req, res, next) {
       daa: user,
     });
   } catch (error) {
-    const message = [];
-    error.errors.forEach((e) => {
-      message.push(e.message);
-    });
-    console.log(message);
-    return next(new ErrorResponse(message, 404));
+    return next(new ErrorResponse(error, 404));
   }
 };
