@@ -42,4 +42,5 @@ db.sequelize
     console.log("Error" + err);
   });
 
+
 module.exports = db;

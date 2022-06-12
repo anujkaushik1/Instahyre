@@ -37,7 +37,8 @@ exports.registeredUsers = function (sequelize, DataTypes) {
         },
       },
       phoneNumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
+        primaryKey : true,
         allowNull: false,
         unique: {
           args: true,

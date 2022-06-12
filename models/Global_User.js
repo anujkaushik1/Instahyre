@@ -17,21 +17,12 @@ exports.globalUsers = function (sequelize, DataTypes) {
           },
         },
       },
-      email: {
-        type: DataTypes.STRING,
-        validate: {
-          isEmail: {
-            args: true,
-            msg: "Please enter correct email address",
-          },
-        },
-      },
       spamCount: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
       phoneNumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: {
           args: true,
