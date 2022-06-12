@@ -1,4 +1,17 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const mysql = require("mysql2/promise");
+
+mysql
+  .createConnection({
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+  })
+  // Raw Queries to only create a database if not exist
+  .then((connection) => {  
+    connection.query("CREATE DATABASE IF NOT EXISTS contacts");
+    connection.query("CREATE DATABASE IF NOT EXISTS global_users");
+    connection.query("CREATE DATABASE IF NOT EXISTS registered_users");
+  });
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
