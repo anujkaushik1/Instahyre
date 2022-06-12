@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const { register, spam, search } = require("../controller/registered_users");
+const {
+  register,
+  spam,
+  searchByName,
+  searchByPhone,
+  getMetaUserData,
+} = require("../controller/registered_users");
 const { protect } = require("../middleware/auth");
 
 router.post("/register", register);
 router.put("/spam", protect, spam);
-router.post("/searchspam", protect, search);
+router.post("/searchbyname", protect, searchByName);
+router.post("/searchbyphone", protect, searchByPhone);
+router.get("/:id", getMetaUserData);
 
 module.exports = router;

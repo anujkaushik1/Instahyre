@@ -106,21 +106,105 @@ exports.spam = async function (req, res, next) {
   }
 };
 
-exports.search = async function (req, res) {
-  const Op = Sequelize.Op;
-  const searchTerm = req.body.searchTerm;
+exports.searchByName = async function (req, res) {
   try {
+    const Op = Sequelize.Op;
+    const searchTerm = req.body.search;
     const resp = await globalUsers.findAll({
       where: {
-        [Op.or]: [
-          { name: { [Op.like]: "%" + searchTerm + "%" } },
-          { phoneNumber: { [Op.like]: "%" + searchTerm + "%" } }
-        ],
+        [Op.or]: [{ name: { [Op.like]: "%" + searchTerm + "%" } }],
       },
     });
-    console.log(resp);
-    res.status(200).send(resp);
+
+    let results = [];
+    for (let i = 0; i < resp.length; i++) {
+      results.push(resp[i].dataValues);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: results,
+    });
   } catch (e) {
-    res.status(400).send(e.message);
+    return next(new ErrorResponse(e.message, 404));
+  }
+};
+
+exports.searchByPhone = async function (req, res) {
+  try {
+    const Op = Sequelize.Op;
+    const searchTerm = req.body.search;
+
+    const isPhoneNumberPresent = await registeredUsers.findAll({
+      where: {
+        phoneNumber: searchTerm,
+      },
+    });
+
+    if (isPhoneNumberPresent.length > 0) {
+      return res.status(200).json({
+        success: true,
+        data: isPhoneNumberPresent[0].dataValues,
+      });
+    }
+    const resp = await globalUsers.findAll({
+      where: {
+        [Op.or]: [{ phoneNumber: { [Op.like]: "%" + searchTerm + "%" } }],
+      },
+    });
+
+    let results = [];
+    for (let i = 0; i < resp.length; i++) {
+      results.push(resp[i].dataValues);
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    });
+  } catch (e) {
+    return res.status(400).send(e.message);
+  }
+};
+
+exports.getMetaUserData = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const globalData = await globalUsers.findAll({
+      where: {
+        id: id,
+      },
+    });
+
+    if (globalData.length === 0) {
+      return next(
+        new ErrorResponse("Please enter correct id of global user", 404)
+      );
+    }
+
+    const phoneNumber = globalData[0].dataValues.phoneNumber;
+    const registeredData = await registeredUsers.findAll({
+      where: {
+        phoneNumber: phoneNumber,
+      },
+    });
+
+    let results = {
+      name: globalData[0].dataValues.name,
+      phoneNumber: globalData[0].dataValues.phoneNumber,
+      spamCount: globalData[0].dataValues.spamCount,
+    };
+
+    if (registeredData.length > 0) {
+      results.email = registeredData[0].dataValues.email;
+      results.name = registeredData[0].dataValues.name;   
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: results,
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error.message, 404));
   }
 };

@@ -53,6 +53,7 @@ exports.registeredUsers = function (sequelize, DataTypes) {
             args: true,
             msg: "Please enter the phone number",
           },
+          isNumeric: true,  
         },
       },
     },

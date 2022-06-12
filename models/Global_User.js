@@ -24,10 +24,6 @@ exports.globalUsers = function (sequelize, DataTypes) {
       phoneNumber: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: "Phone number must be unique",
-        },
         validate: {
           len: {
             args: 10,
@@ -37,6 +33,7 @@ exports.globalUsers = function (sequelize, DataTypes) {
             args: true,
             msg: "Please enter the phone number",
           },
+          isNumeric: true,  
         },
       },
     },
