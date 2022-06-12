@@ -1,7 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const errorHandler = require('./middleware/error');
+const errorHandler = require("./middleware/error");
 const app = express();
+
+// Body Parser
+app.use(express.json());
 
 // Loading Env Variables
 dotenv.config({ path: "./config/config.env" });
@@ -11,9 +14,8 @@ const registered_users = require("./routes/registered_users");
 
 const PORT = process.env.PORT || 3000;
 
-
 // Mounting Routes
-app.use("/api/v1/users", registered_users)
+app.use("/api/v1/users", registered_users);
 
 app.use(errorHandler);
 

@@ -39,18 +39,18 @@ exports.registeredUsers = function (sequelize, DataTypes) {
       phoneNumber: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: {
+          args: true,
+          msg: "Phone number must be unique",
+        },
         validate: {
           len: {
             args: 10,
             msg: "Please enter correct phone number",
           },
-          unique: {
-            args: true,
-            msg: "Phone number must be unique",
-          },
           notNull: {
             args: true,
-            msg: ["Please enter the phone number"],
+            msg: "Please enter the phone number",
           },
         },
       },
