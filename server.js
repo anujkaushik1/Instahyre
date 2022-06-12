@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
 const helmet = require("helmet");
 const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
 const app = express();
 
 // Body Parser
@@ -21,7 +23,18 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet());
 
 // Prevent XSS attacks
-app.use(xss())
+app.use(xss());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 100,
+});
+
+app.use(limiter);
+
+// Prevent http param pollution
+app.use(hpp());
 
 // Mounting Routes
 app.use("/api/v1/users", registered_users);
