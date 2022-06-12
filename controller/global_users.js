@@ -2,6 +2,10 @@ const ErrorResponse = require("../utils/errorResponse");
 const db = require("../config/db");
 const globalUsers = db.globalUsers;
 
+// @desc      Register user
+// @route     POST /api/v1/global/register
+// @access    Public
+
 exports.register = async function (req, res, next) {
   try {
     const body = req.body;

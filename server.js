@@ -11,14 +11,14 @@ const app = express();
 // Body Parser
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000;
+
 // Loading Env Variables
 dotenv.config({ path: "./config/config.env" });
 
 // Route files
 const registered_users = require("./routes/registered_users");
 const global_users = require("./routes/global_users");
-
-const PORT = process.env.PORT || 3000;
 
 // Set security headers
 app.use(helmet());

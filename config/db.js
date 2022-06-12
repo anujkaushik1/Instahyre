@@ -46,6 +46,8 @@ db.sequelize
     console.log("Error" + err);
   });
 
+// Association - One To Many Relation
+
 db.registeredUsers.hasMany(db.contacts, {
   foreignKey: "phoneNumber",
 });

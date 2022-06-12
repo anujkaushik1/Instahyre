@@ -6,6 +6,7 @@ const Sequelize = db.Sequelize;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// Get token from model and send response
 function sendTokenResponse(user, statusCode, res) {
   const token = getSignedJwtToken(user.id);
   const options = {
@@ -21,22 +22,26 @@ function sendTokenResponse(user, statusCode, res) {
     data: user,
   });
 }
-
+// Sign JWT and return
 function getSignedJwtToken(id) {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
 }
 
+// @desc      Register user
+// @route     POST /api/v1/users/register
+// @access    Public
+
 exports.register = async function (req, res, next) {
   try {
     const body = req.body;
 
-    if(!body.password){
+    if (!body.password) {
       return next(new ErrorResponse("Please enter password", 401));
     }
 
-    if(!body.phoneNumber){
+    if (!body.phoneNumber) {
       return next(new ErrorResponse("Please enter phone number", 401));
     }
 
@@ -61,6 +66,8 @@ exports.register = async function (req, res, next) {
       return next(new ErrorResponse("Phone Number already exists", 401));
     }
 
+    // Encrypt password using bcrypt
+
     const salt = await bcrypt.genSalt(10);
     body.password = await bcrypt.hash(body.password, salt);
 
@@ -73,11 +80,15 @@ exports.register = async function (req, res, next) {
   }
 };
 
+// @desc      Add user to spam list in global table
+// @route     PUT /api/v1/users/spam
+// @access    Private
+
 exports.spam = async function (req, res, next) {
   try {
     const { phoneNumber } = req.body;
 
-    if(!phoneNumber){
+    if (!phoneNumber) {
       return next(new ErrorResponse("Please enter phone number", 401));
     }
 
@@ -113,12 +124,16 @@ exports.spam = async function (req, res, next) {
   }
 };
 
+// @desc      Search by name
+// @route     POST /api/v1/users/searchbyname
+// @access    Private
+
 exports.searchByName = async function (req, res, next) {
   try {
     const Op = Sequelize.Op;
     const searchTerm = req.body.search;
 
-    if(!searchTerm){
+    if (!searchTerm) {
       return next(new ErrorResponse("Please enter name", 401));
     }
     const resp = await globalUsers.findAll({
@@ -141,12 +156,16 @@ exports.searchByName = async function (req, res, next) {
   }
 };
 
+// @desc      Search by phone
+// @route     POST /api/v1/users/searchbyphone
+// @access    Private
+
 exports.searchByPhone = async function (req, res, next) {
   try {
     const Op = Sequelize.Op;
     const searchTerm = req.body.search;
 
-    if(!searchTerm){
+    if (!searchTerm) {
       return next(new ErrorResponse("Please enter phone number", 401));
     }
 
@@ -181,7 +200,9 @@ exports.searchByPhone = async function (req, res, next) {
     return res.status(400).send(e.message);
   }
 };
-
+// @desc      Get details of a registered or unregistered user
+// @route     GET /api/v1/users/:id
+// @access    Private
 exports.getMetaUserData = async function (req, res, next) {
   try {
     const id = req.params.id;
@@ -212,7 +233,7 @@ exports.getMetaUserData = async function (req, res, next) {
 
     if (registeredData.length > 0) {
       results.email = registeredData[0].dataValues.email;
-      results.name = registeredData[0].dataValues.name;   
+      results.name = registeredData[0].dataValues.name;
     }
 
     return res.status(200).json({
