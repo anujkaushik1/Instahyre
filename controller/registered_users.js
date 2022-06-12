@@ -30,14 +30,14 @@ function getSignedJwtToken(id) {
 exports.register = async function (req, res, next) {
   try {
     const body = req.body;
-    
+
     const isNumberPresentGlobal = await globalUsers.findAll({
       where: {
         phoneNumber: body.phoneNumber,
       },
     });
-    
-    if(isNumberPresentGlobal.length === 0){
+
+    if (isNumberPresentGlobal.length === 0) {
       let data = await globalUsers.build(body);
       await data.save();
     }
