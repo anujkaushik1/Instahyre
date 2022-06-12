@@ -2,6 +2,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const db = require("../config/db");
 const registeredUsers = db.registeredUsers;
 const globalUsers = db.globalUsers;
+const Sequelize = db.Sequelize;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -66,5 +67,60 @@ exports.register = async function (req, res, next) {
     });
     console.log(message);
     return next(new ErrorResponse(message, 404));
+  }
+};
+
+exports.spam = async function (req, res, next) {
+  try {
+    const { phoneNumber } = req.body;
+
+    const isNumberPresent = await globalUsers.findAll({
+      where: {
+        phoneNumber: phoneNumber,
+      },
+    });
+
+    if (isNumberPresent.length === 0) {
+      return next(new ErrorResponse("Contact not exist"));
+    }
+
+    let spamCount = isNumberPresent[0].spamCount;
+    spamCount += 1;
+
+    const fieldsToUpdate = {
+      spamCount: spamCount,
+    };
+
+    const user = await globalUsers.update(fieldsToUpdate, {
+      where: {
+        phoneNumber: phoneNumber,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      msg: "User added to spam list",
+    });
+  } catch (error) {
+    return next(new ErrorResponse(message, 404));
+  }
+};
+
+exports.search = async function (req, res) {
+  const Op = Sequelize.Op;
+  const searchTerm = req.body.searchTerm;
+  try {
+    const resp = await globalUsers.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: "%" + searchTerm + "%" } },
+          { phoneNumber: { [Op.like]: "%" + searchTerm + "%" } }
+        ],
+      },
+    });
+    console.log(resp);
+    res.status(200).send(resp);
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 };
