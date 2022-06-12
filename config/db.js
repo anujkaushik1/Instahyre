@@ -25,7 +25,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-var {registeredUsers} = require("../models/Registered_Users");
+var {registeredUsers} = require("../models/Registered_User");
 db.registeredUsers = registeredUsers(sequelize, DataTypes);
 
 db.sequelize
