@@ -20,4 +20,22 @@ sequelize
     console.log("Error : " + err);
   });
 
+  
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+var {registeredUsers} = require("../models/Registered_Users");
+db.registeredUsers = registeredUsers(sequelize, DataTypes);
+
+db.sequelize
+  .sync()
+  .then(function () {
+    console.log("Registered User Table Created Successfully");
+  })
+  .catch(function (err) {
+    console.log("Error" + err);
+  });
+
+module.exports = db;
 
