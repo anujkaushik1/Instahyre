@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const cors = require("cors");
 const app = express();
 
 // Body Parser
@@ -35,6 +36,9 @@ app.use(limiter);
 
 // Prevent http param pollution
 app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // Mounting Routes
 app.use("/api/v1/users", registered_users);
