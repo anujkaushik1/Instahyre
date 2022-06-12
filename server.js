@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
+const helmet = require("helmet");
 const app = express();
 
 // Body Parser
@@ -14,6 +15,9 @@ const registered_users = require("./routes/registered_users");
 const global_users = require("./routes/global_users");
 
 const PORT = process.env.PORT || 3000;
+
+// Set security headers
+app.use(helmet());
 
 // Mounting Routes
 app.use("/api/v1/users", registered_users);
