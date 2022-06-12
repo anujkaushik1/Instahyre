@@ -13,6 +13,6 @@ router.post("/register", register);
 router.put("/spam", protect, spam);
 router.post("/searchbyname", protect, searchByName);
 router.post("/searchbyphone", protect, searchByPhone);
-router.get("/:id", getMetaUserData);
+router.get("/:id", protect, getMetaUserData);
 
 module.exports = router;

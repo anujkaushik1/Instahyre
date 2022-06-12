@@ -26,12 +26,16 @@ db.sequelize = sequelize;
 
 var { registeredUsers } = require("../models/Registered_User");
 var { globalUsers } = require("../models/Global_User");
+var { contacts } = require("../models/Contacts");
 
 // Register User Table
 db.registeredUsers = registeredUsers(sequelize, DataTypes);
 
 // Global User Table
 db.globalUsers = globalUsers(sequelize, DataTypes);
+
+// Contact User Table
+db.contacts = contacts(sequelize, DataTypes);
 
 db.sequelize
   .sync()
@@ -42,5 +46,12 @@ db.sequelize
     console.log("Error" + err);
   });
 
+db.registeredUsers.hasMany(db.contacts, {
+  foreignKey: "phoneNumber",
+});
+
+db.contacts.belongsTo(db.registeredUsers, {
+  foreignKey: "phoneNumber",
+});
 
 module.exports = db;
