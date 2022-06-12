@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const errorHandler = require('./middleware/error');
 const app = express();
 
 // Loading Env Variables
@@ -9,10 +10,12 @@ dotenv.config({ path: "./config/config.env" });
 const registered_users = require("./routes/registered_users");
 
 const PORT = process.env.PORT || 3000;
-const API = process.env.API;
+
 
 // Mounting Routes
-app.use(API, registered_users)
+app.use("/api/v1/users", registered_users)
+
+app.use(errorHandler);
 
 app.listen(PORT, function () {
   console.log(
