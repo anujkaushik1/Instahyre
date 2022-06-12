@@ -1,6 +1,6 @@
-exports.registeredUsers = function (sequelize, DataTypes) {
-  const registeredUsers = sequelize.define(
-    "registered_users",
+exports.globalUsers = function (sequelize, DataTypes) {
+  const globalUsers = sequelize.define(
+    "global_users",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -26,15 +26,9 @@ exports.registeredUsers = function (sequelize, DataTypes) {
           },
         },
       },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            args: true,
-            msg: "Please enter the password",
-          },
-        },
+      spamCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       phoneNumber: {
         type: DataTypes.INTEGER,
@@ -60,5 +54,5 @@ exports.registeredUsers = function (sequelize, DataTypes) {
     }
   );
 
-  return registeredUsers;
+  return globalUsers;
 };

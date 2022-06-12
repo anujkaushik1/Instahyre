@@ -2,19 +2,41 @@ const ErrorResponse = require("../utils/errorResponse");
 const db = require("../config/db");
 const registeredUsers = db.registeredUsers;
 const bcrypt = require("bcryptjs");
-const { format } = require("path");
-const { use } = require("../routes/registered_users");
+const jwt = require("jsonwebtoken");
+
+function sendTokenResponse(user, statusCode, res) {
+    const token = getSignedJwtToken(user.id);
+    const options = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    };
+  
+    res.status(statusCode).cookie("token", token, options).json({
+      success: true,
+      token: token,
+      data: user,
+    });
+  }
+
+function getSignedJwtToken(id) {
+    return jwt.sign({ id: id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE,
+    });
+  }
+
 exports.register = async function (req, res, next) {
   try {
     const body = req.body;
-
+    console.log(body);
     const isPhoneNumberPresent = await registeredUsers.findAll({
       where: {
         phoneNumber: body.phoneNumber,
       },
     });
 
-    if (isPhoneNumberPresent) {
+    if (isPhoneNumberPresent != 0) {
       return next(new ErrorResponse("Phone Number already exists", 401));
     }
 
@@ -24,11 +46,8 @@ exports.register = async function (req, res, next) {
     let data = await registeredUsers.build(body);
     const user = await data.save();
 
-    return res.status(200).json({
-      success: true,
-      msg: "User Registered Successfully",
-      data: user,
-    });
+    sendTokenResponse(user, 200, res);
+    
   } catch (error) {
       const message = [];
       error.errors.forEach((e) => {
