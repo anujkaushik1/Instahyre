@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
 const helmet = require("helmet");
+const xss = require("xss-clean");
 const app = express();
 
 // Body Parser
@@ -18,6 +19,9 @@ const PORT = process.env.PORT || 3000;
 
 // Set security headers
 app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss())
 
 // Mounting Routes
 app.use("/api/v1/users", registered_users);
