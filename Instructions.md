@@ -17,7 +17,7 @@ access - Public
 
 fields - `{
     "name" : "Test Name",
-    "email" : NULL || "test@gmail.com"
+    "email" : NULL || "test@gmail.com",
     "phoneNumber" : "1234567890",
     "password" : "password"
 }`

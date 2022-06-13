@@ -21,6 +21,7 @@ const sequelize = new Sequelize(
     host: process.env.HOST,
     dialect: process.env.DIALECT,
     pool: { max: 5, min: 0, idle: 10000 },
+    logging: false
   }
 );
 
