@@ -1,0 +1,38 @@
+[
+    {
+        "id" : 1,
+        "name" : "Anuj Kaushik",
+        "email" : "a@gmail.com",
+        "password" : "password",
+        "phoneNumber" : "1234567895"
+    },
+    {
+        "id" : 2,
+        "name" : "Nishant Jain",
+        "email" : "n@gmail.com",
+        "password" : "password",
+        "phoneNumber" : "1234567894"
+    },
+    {
+        "id" : 3,
+        "name" : "Kamal Kant",
+        "email" : "k@gmail.com",
+        "password" : "password",
+        "phoneNumber" : "1234567893"
+    },
+    {
+        "id" : 1,
+        "name" : "Neeraj Sharma",
+        "email" : "n@gmail.com",
+        "password" : "password",
+        "phoneNumber" : "1234567892"
+    },
+    {
+        "id" : 1,
+        "name" : "Vishal Rout",
+        "email" : "v@gmail.com",
+        "password" : "password",
+        "phoneNumber" : "1234567891"
+    }
+
+]
